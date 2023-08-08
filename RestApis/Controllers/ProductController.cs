@@ -1,21 +1,53 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
 using RestApis.Models;
+using RestApis.Repository;
 
 namespace RestApis.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
+        IRepository<Product> productRepository;
 
         public ProductController(AppDbContext context)
         {
             _context = context;
+            productRepository = new ProductRepository(_context);
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        {
+            var products = await productRepository.Get();
+            return products;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Product>> CreateProduct(Product product)
+        {
+            var products = await productRepository.Create(product);
+            return products;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var products = await productRepository.Delete(id);
+            return products;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, Product product)
+        {
+            var products = await productRepository.Update(id, product);
+            return products;
+        }
+        /*
         //Get Request
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetProducts()
@@ -77,6 +109,6 @@ namespace RestApis.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
     }
 }

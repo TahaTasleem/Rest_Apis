@@ -1,6 +1,8 @@
-﻿namespace RestApis.Models
+﻿using RestApis.Repository;
+
+namespace RestApis.Models
 {
-    public class Review
+    public class Review : IEntity
     {
         public int Id { get; set; }
         public string Content { get; set; }

@@ -1,20 +1,53 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
 using RestApis.Models;
+using RestApis.Repository;
 
 namespace RestApis.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ReviewController : Controller
     {
         private readonly AppDbContext _context;
+        IRepository<Review> reviewRepository;
 
         public ReviewController(AppDbContext context)
         {
             _context = context;
+            reviewRepository = new ReviewRepository(_context);
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
+        {
+            var reviews = await reviewRepository.Get();
+            return reviews;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Review>> CreateReview(Review review)
+        {
+            var reviews = await reviewRepository.Create(review);
+            return reviews;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReview(int id)
+        {
+            var reviews = await reviewRepository.Delete(id);
+            return reviews;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReview(int id, Review review)
+        {
+            var reviews = await reviewRepository.Update(id, review);
+            return reviews;
+        }
+        /*
         //Get Request
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetReviews()
@@ -77,7 +110,7 @@ namespace RestApis.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
 
     }
 }

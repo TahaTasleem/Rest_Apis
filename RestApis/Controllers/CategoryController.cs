@@ -1,23 +1,56 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
 using RestApis.Models;
+using RestApis.Repository;
 
 namespace RestApis.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
+        IRepository<Category> categoryRepository;
 
         public CategoryController(AppDbContext context)
         {
             _context = context;
+            categoryRepository = new CategoryRepository(_context);
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        { 
+            var categories = await categoryRepository.Get();
+            return categories;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Category>> CreateCategory(Category category)
+        {
+            var categories = await categoryRepository.Create(category);
+            return categories;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var categories = await categoryRepository.Delete(id);
+            return categories;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCategory(int id, Category category)
+        {
+            var categories = await categoryRepository.Update(id,category);
+            return categories;
+        }
+        /*
         //Get Request
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
             var categories = await _context.Category.ToListAsync();
             return Ok(categories);
@@ -76,6 +109,6 @@ namespace RestApis.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
     }
 }

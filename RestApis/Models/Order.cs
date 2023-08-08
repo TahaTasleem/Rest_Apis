@@ -1,6 +1,8 @@
-﻿namespace RestApis.Models
+﻿using RestApis.Repository;
+
+namespace RestApis.Models
 {
-    public class Order
+    public class Order : IEntity
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }

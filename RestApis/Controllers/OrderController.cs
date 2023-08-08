@@ -1,21 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
 using RestApis.Models;
+using RestApis.Repository;
 
 namespace RestApis.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class OrderController : Controller
     {
         private readonly AppDbContext _context;
+        IRepository<Order> orderRepository;
 
         public OrderController(AppDbContext context)
         {
             _context = context;
+            orderRepository = new OrderRepository(_context);
         }
-        //Get Request
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrder()
+        {
+            var orders = await orderRepository.Get();
+            return orders;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Order>> CreateOrder(Order order)
+        {
+            var orders = await orderRepository.Create(order);
+            return orders;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var orders = await orderRepository.Delete(id);
+            return orders;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrder(int id, Order order)
+        {
+            var orders = await orderRepository.Update(id, order);
+            return orders;
+        }
+
+
+        /*//Get Request
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
@@ -76,7 +110,7 @@ namespace RestApis.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
     }
    
 }

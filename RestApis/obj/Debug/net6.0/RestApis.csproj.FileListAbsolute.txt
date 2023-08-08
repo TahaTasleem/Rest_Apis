@@ -84,3 +84,5 @@ C:\Users\tasletah\source\repos\RestApis\RestApis\bin\Debug\net6.0\System.CodeDom
 C:\Users\tasletah\source\repos\RestApis\RestApis\bin\Debug\net6.0\System.Text.Encodings.Web.dll
 C:\Users\tasletah\source\repos\RestApis\RestApis\bin\Debug\net6.0\System.Text.Json.dll
 C:\Users\tasletah\source\repos\RestApis\RestApis\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\tasletah\source\repos\RestApis\RestApis\bin\Debug\net6.0\BCrypt.Net.dll
+C:\Users\tasletah\source\repos\RestApis\RestApis\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
