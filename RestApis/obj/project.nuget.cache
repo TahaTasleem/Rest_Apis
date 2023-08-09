@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9uamp2oHdzD1yqEQmqecIy3n+zCwCGALZs3rK4gU9IKnhgyAIsfTiXNIII+Q4hStABwzbz9px0WxaBJtmuMzzA==",
+  "dgSpecHash": "n6dSZOkRFC4Ut1qArE8J32D6hK9mlVNTHYcmESC5a4ykqVICIvWiw8OfInw+/tBbfeP0198HDpbOWkXz5i6jFw==",
   "success": true,
   "projectFilePath": "C:\\Users\\tasletah\\source\\repos\\RestApis\\RestApis\\RestApis.csproj",
   "expectedPackageFiles": [
@@ -11,7 +11,7 @@
     "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
-    "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.20\\microsoft.aspnetcore.authentication.jwtbearer.6.0.20.nupkg.sha512",
+    "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.21\\microsoft.aspnetcore.authentication.jwtbearer.6.0.21.nupkg.sha512",
     "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",
     "C:\\Users\\tasletah\\.nuget\\packages\\microsoft.aspnetcore.dataprotection.abstractions\\2.2.0\\microsoft.aspnetcore.dataprotection.abstractions.2.2.0.nupkg.sha512",

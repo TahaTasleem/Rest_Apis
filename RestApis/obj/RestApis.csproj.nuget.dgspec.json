@@ -51,7 +51,7 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[6.0.20, )"
+              "version": "[6.0.21, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

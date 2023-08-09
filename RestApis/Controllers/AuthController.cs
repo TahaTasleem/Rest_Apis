@@ -7,16 +7,27 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Net;
+using RestApis.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestApis.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
         private readonly AppDbContext _context;
+        private void SetJwtTokenCookie(string token)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddMinutes(10) 
+            };
 
+            Response.Cookies.Append("Token", token, cookieOptions);
+        }
         public AuthController(IConfiguration config,AppDbContext context)
         {
             _config = config;
@@ -24,22 +35,32 @@ namespace RestApis.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(Login login)
         {
             try
             {
-                var user = await _context.User.FirstOrDefaultAsync(u => u.Username == username);
-
-                if (user == null || !VerifyPassword(password, user.Password))
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Username == login.Username);
+                if (user == null)
                 {
+                    Console.WriteLine(user);
                     return Unauthorized("Invalid username or password");
                 }
 
-                var token = GenerateJwtToken(username);
+                if (!VerifyPassword(login.Password, user.Password))
+                {
+                    Console.WriteLine(user);
+                    return Unauthorized("Invalid username or password");
+                }
+
+                var token = GenerateJwtToken(user.Username);
+                SetJwtTokenCookie(token);
                 return Ok(new { token });
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
                 // Log the exception or handle it as needed
                 return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred");
             }
@@ -51,23 +72,23 @@ namespace RestApis.Controllers
 
         private string GenerateJwtToken(string username)
         {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, username),
-            // Add additional claims as needed
-        };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                new Claim(ClaimTypes.Name, username)
+            };
 
             var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
-                claims,
-                expires: DateTime.Now.AddMinutes(30), // Set token expiration
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                issuer: _config["JwtSettings:Issuer"],
+                audience: _config["JwtSettings:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(30), 
+                signingCredentials: creds
+            );
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenString = tokenHandler.WriteToken(token);
+            return tokenString;
         }
     }
 }

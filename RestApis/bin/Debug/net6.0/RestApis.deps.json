@@ -10,7 +10,7 @@
         "dependencies": {
           "BCrypt.Net": "0.1.0",
           "Microsoft.AspNetCore.Authentication": "2.2.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.20",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.21",
           "Microsoft.EntityFrameworkCore": "7.0.9",
           "Microsoft.EntityFrameworkCore.Design": "7.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.9",
@@ -97,14 +97,14 @@
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0"
         }
       },
-      "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.20": {
+      "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.21": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.21.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
-            "assemblyVersion": "6.0.20.0",
-            "fileVersion": "6.0.2023.32106"
+            "assemblyVersion": "6.0.21.0",
+            "fileVersion": "6.0.2123.36438"
           }
         }
       },
@@ -941,12 +941,12 @@
       "path": "microsoft.aspnetcore.authentication.core/2.2.0",
       "hashPath": "microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.20": {
+    "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.21": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+h9mLcUvoCafhAInfALHd2H1oelu3F31GbY83dEkJzqCKdP34x6hSvB5uj9wF/JowLosD6+ZMcPlU+nogka+mg==",
-      "path": "microsoft.aspnetcore.authentication.jwtbearer/6.0.20",
-      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.6.0.20.nupkg.sha512"
+      "sha512": "sha512-EZfFWxMTd2Su5kfhaL5gIhEGANVcBV89qQX4nu/akSQNutW4AjfEujniQJTn/PXUaqOhWnykyKmly4p66CzbRA==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/6.0.21",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.6.0.21.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cryptography.Internal/2.2.0": {
       "type": "package",

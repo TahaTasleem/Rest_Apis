@@ -7,15 +7,15 @@ using RestApis.Repository;
 
 namespace RestApis.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
         IRepository<Category> categoryRepository;
 
-        public CategoryController(AppDbContext context)
+        public CategoryController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             categoryRepository = new CategoryRepository(_context);
