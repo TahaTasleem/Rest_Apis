@@ -15,7 +15,7 @@ namespace RestApis.JWT
 
         public async Task Invoke(HttpContext context)
         {
-            try
+            try 
             {
                 var jwtToken = context.Request.Cookies["Token"];
 

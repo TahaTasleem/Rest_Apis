@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using RestApis.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure;
 
 namespace RestApis.Data;
 public class AppDbContext : DbContext
@@ -17,6 +18,12 @@ public class AppDbContext : DbContext
     {
         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
     }
+    /*public DbQuery<User> User { get; set; }
+    public DbQuery<Order> Order { get; set; }
+    public DbQuery<Product> Product { get; set; }
+    public DbQuery<Category> Category { get; set; }
+    public DbQuery<Review> Review { get; set; }*/
+
     public DbSet<User> User { get; set; }
     public DbSet<Order> Order { get; set; }
     public DbSet<Product> Product { get; set; }

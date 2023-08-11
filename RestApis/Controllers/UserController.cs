@@ -23,7 +23,7 @@ namespace RestApis.Controllers
         {
             _unitOfWork = unitOfwork;
             dbSet = _unitOfWork.Context.Set<User>();
-            userRepository = new UserRepository(_unitOfWork);
+            userRepository = new UserRepository(_unitOfWork,"crud5");
         }
 
         [HttpGet]
@@ -43,7 +43,9 @@ namespace RestApis.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User user)
         {
-            if (id != user.Id)
+            var users = await userRepository.Update(id,user);
+            return users;
+            /*if (id != user.Id)
             {
                 return BadRequest();
             }
@@ -67,8 +69,8 @@ namespace RestApis.Controllers
             {
                 throw;
             }
-
-            return NoContent();
+            
+            return NoContent();*/
         }
 
         //Post Request
@@ -85,59 +87,5 @@ namespace RestApis.Controllers
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
-
-        /*
-        //Get Request
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            var users = await _context.User.ToListAsync();
-            return Ok(users);
-        }
-
-        //Put Request
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            var existingUser = await _context.User.FindAsync(id);
-            if (existingUser == null)
-            {
-                return NotFound();
-            }
-
-            _context.Entry(existingUser).CurrentValues.SetValues(user);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-
-            return NoContent();
-        }
-
-        //Delete Request
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }*/
     }
 }

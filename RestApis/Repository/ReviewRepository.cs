@@ -6,7 +6,7 @@ namespace RestApis.Repository
 {
     public class ReviewRepository : RepositoryBase<Review>
     {
-        public ReviewRepository(IUnitOfwork unitOfwork) : base(unitOfwork)
+        public ReviewRepository(IUnitOfwork unitOfwork, string ProcedureName) : base(unitOfwork, ProcedureName)
         {
         }
     }

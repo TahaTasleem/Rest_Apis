@@ -6,7 +6,7 @@ namespace RestApis.Repository
 {
     public class OrderRepository : RepositoryBase<Order>
     {
-        public OrderRepository(IUnitOfwork unitOfwork) : base(unitOfwork)
+        public OrderRepository(IUnitOfwork unitOfwork, string ProcedureName) : base(unitOfwork, ProcedureName)
         {
         }
     }

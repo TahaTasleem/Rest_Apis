@@ -7,7 +7,7 @@ namespace RestApis.Repository
 {
     public class CategoryRepository : RepositoryBase<Category>
     {
-        public CategoryRepository(IUnitOfwork unitOfwork) : base(unitOfwork)
+        public CategoryRepository(IUnitOfwork unitOfwork,string ProcedureName) : base(unitOfwork, ProcedureName)
         {
         }
     }
