@@ -2,23 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
+using RestApis.Exception_Handler;
 using RestApis.Models;
 using RestApis.Repository;
+using RestApis.UnitofWork;
 
 namespace RestApis.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("[controller]")]
+    [ApiExceptionHandler]
     public class OrderController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IUnitOfwork _unitOfWork;
         IRepository<Order> orderRepository;
 
-        public OrderController(AppDbContext context)
+        public OrderController(IUnitOfwork unitOfWork)
         {
-            _context = context;
-            orderRepository = new OrderRepository(_context);
+            _unitOfWork = unitOfWork;
+            orderRepository = new OrderRepository(_unitOfWork);
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder()

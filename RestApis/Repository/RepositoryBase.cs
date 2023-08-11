@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
 using RestApis.Models;
+using RestApis.UnitofWork;
 
 namespace RestApis.Repository
 {
@@ -11,25 +12,29 @@ namespace RestApis.Repository
     {
         protected readonly DbContext _context;
         protected DbSet<T> dbSet;
+        private readonly IUnitOfwork _unitOfWork;
 
-        public RepositoryBase(DbContext context)
+        public RepositoryBase(IUnitOfwork unitOfwork)
         {
-            _context = context;
-            dbSet = context.Set<T>();
+            _unitOfWork = unitOfwork;
+            dbSet = _unitOfWork.Context.Set<T>();
         }
 
         //Get Request
         public async Task<ActionResult<IEnumerable<T>>> Get()
         {
-            var data = await _context.Set<T>().ToListAsync();
+            var data = await dbSet.ToListAsync();
+            //var data = await _context.Set<T>().ToListAsync();
             return Ok(data);
         }
 
         //Create Request
         public async Task<ActionResult<T>> Create(T entity)
         {
-            _context.Set<T>().Add(entity);
-            await _context.SaveChangesAsync();
+            dbSet.Add(entity);
+            await _unitOfWork.SaveChangesAsync();
+            //_context.Set<T>().Add(entity);
+            //await _context.SaveChangesAsync();            
             //return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
             return entity;
         }
@@ -42,17 +47,17 @@ namespace RestApis.Repository
                 return BadRequest();
             }
 
-            var existingOrder = await _context.Set<T>().FindAsync(id);
+            var existingOrder = await dbSet.FindAsync(id);
             if (existingOrder == null)
             {
                 return NotFound();
             }
 
-            _context.Entry(existingOrder).CurrentValues.SetValues(entity);
+            _unitOfWork.Context.Entry(existingOrder).CurrentValues.SetValues(entity);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -65,14 +70,14 @@ namespace RestApis.Repository
         //Delete Request
         public async Task<IActionResult> Delete(int id)
         {
-            var data = await _context.Set<T>().FindAsync(id);
+            var data = await dbSet.FindAsync(id);
             if (data == null)
             {
                 return NotFound();
             }
 
-            _context.Set<T>().Remove(data);
-            await _context.SaveChangesAsync();
+            dbSet.Remove(data);
+            await _unitOfWork.SaveChangesAsync();
             return NoContent();
         }
     }

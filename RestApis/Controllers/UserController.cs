@@ -1,23 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
+using RestApis.Exception_Handler;
 using RestApis.Models;
 using RestApis.Repository;
+using RestApis.UnitofWork;
 
 namespace RestApis.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
+    [ApiExceptionHandler]
     public class UserController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IUnitOfwork _unitOfWork;
         IRepository<User> userRepository;
+        protected DbSet<User> dbSet;
 
-        public UserController(AppDbContext context)
+        public UserController(IUnitOfwork unitOfwork)
         {
-            _context = context;
-            userRepository = new UserRepository(_context);
+            _unitOfWork = unitOfwork;
+            dbSet = _unitOfWork.Context.Set<User>();
+            userRepository = new UserRepository(_unitOfWork);
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -40,7 +48,7 @@ namespace RestApis.Controllers
                 return BadRequest();
             }
 
-            var existingEntity = await _context.User.FindAsync(id);
+            var existingEntity = await  dbSet.FindAsync(id);
             if (existingEntity == null)
             {
                 return NotFound();
@@ -49,11 +57,11 @@ namespace RestApis.Controllers
             existingEntity.Email = user.Email;
             var originalPassword = existingEntity.Password;
             user.Password = originalPassword;
-            _context.Entry(existingEntity).CurrentValues.SetValues(user);
+            _unitOfWork.Context.Entry(existingEntity).CurrentValues.SetValues(user);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,8 +77,8 @@ namespace RestApis.Controllers
         {
             string hashedPassword = HashPassword(user.Password);
             user.Password = hashedPassword;
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
+            dbSet.Add(user);
+            await _unitOfWork.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
         }
         private string HashPassword(string password)

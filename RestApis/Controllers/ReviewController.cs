@@ -2,23 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
+using RestApis.Exception_Handler;
 using RestApis.Models;
 using RestApis.Repository;
+using RestApis.UnitofWork;
 
 namespace RestApis.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("[controller]")]
+    [ApiExceptionHandler]
     public class ReviewController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IUnitOfwork _unitOfWork;
         IRepository<Review> reviewRepository;
 
-        public ReviewController(AppDbContext context)
+        public ReviewController(IUnitOfwork unitOfWork)
         {
-            _context = context;
-            reviewRepository = new ReviewRepository(_context);
+            _unitOfWork = unitOfWork;
+            reviewRepository = new ReviewRepository(_unitOfWork);
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviews()

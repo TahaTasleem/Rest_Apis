@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestApis.Models;
+using RestApis.UnitofWork;
 
 namespace RestApis.Repository
 {
     public class ReviewRepository : RepositoryBase<Review>
     {
-        public ReviewRepository(DbContext context) : base(context)
+        public ReviewRepository(IUnitOfwork unitOfwork) : base(unitOfwork)
         {
         }
     }

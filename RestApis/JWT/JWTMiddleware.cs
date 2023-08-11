@@ -17,13 +17,11 @@ namespace RestApis.JWT
         {
             try
             {
-                // Get the JWT token from the cookie
                 var jwtToken = context.Request.Cookies["Token"];
 
                 if (!string.IsNullOrEmpty(jwtToken))
                 {
                     Console.WriteLine(jwtToken);
-                    // Remove angle brackets around the token when adding to headers
                     context.Request.Headers.Add("Authorization", $"bearer {jwtToken}");
                 }
 

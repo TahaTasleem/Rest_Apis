@@ -2,23 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestApis.Data;
+using RestApis.Exception_Handler;
 using RestApis.Models;
 using RestApis.Repository;
+using RestApis.UnitofWork;
 
 namespace RestApis.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("[controller]")]
+    [ApiExceptionHandler]
     public class ProductController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IUnitOfwork _unitOfWork;
         IRepository<Product> productRepository;
 
-        public ProductController(AppDbContext context)
+        public ProductController(IUnitOfwork unitOfWork)
         {
-            _context = context;
-            productRepository = new ProductRepository(_context);
+            _unitOfWork = unitOfWork;
+            productRepository = new ProductRepository(_unitOfWork);
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
