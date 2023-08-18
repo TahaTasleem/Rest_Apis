@@ -9,7 +9,6 @@ using RestApis.UnitofWork;
 
 namespace RestApis.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     [ApiExceptionHandler]
@@ -25,20 +24,21 @@ namespace RestApis.Controllers
             dbSet = _unitOfWork.Context.Set<User>();
             userRepository = new UserRepository(_unitOfWork,"crud5");
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await userRepository.Get();
             return users;
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var users = await userRepository.Delete(id);
             return users;
         }
+        [Authorize]
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User user)

@@ -23,7 +23,10 @@ namespace RestApis.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddMinutes(10) 
+                Expires = DateTime.UtcNow.AddMinutes(10) ,
+                Domain="localhost",
+                Path = "/",
+                SameSite=SameSiteMode.None
             };
 
             Response.Cookies.Append("Token", token, cookieOptions);

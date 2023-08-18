@@ -8,10 +8,17 @@ using RestApis.UnitofWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
+    });
+});
 var configuration = builder.Configuration;
 var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.AddHttpContextAccessor();
@@ -61,7 +68,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseMiddleware<JWTMiddleware>();
 
